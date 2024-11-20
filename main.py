@@ -77,7 +77,7 @@ def update_graph(selected_category, selected_feature):
     elif selected_category == "Sports" and selected_feature:
         return create_sport_chart(selected_feature)
     else:
-        return px.bar(title="Select a Category and Feature")
+        return px.bar(title="Select a Category")
 
 
 if __name__ == "__main__":

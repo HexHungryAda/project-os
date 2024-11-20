@@ -37,7 +37,7 @@ def create_australia_chart(selected_feature):
         )
         fig.update_layout(bargap=0.1)
     else:
-        fig = px.bar(title="No Data Available")
+        fig = px.bar(title="Select a Feature")
 
     return fig
 
