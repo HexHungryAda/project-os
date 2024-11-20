@@ -1,6 +1,7 @@
 from dash import Dash, html, dcc, Output, Input
 import pandas as pd
 import plotly_express as px
+import dash_bootstrap_components as dbc
 from figures import create_australia_chart, create_sport_chart
 
 
@@ -8,29 +9,46 @@ df = pd.read_csv("Data/athlete_events.csv")
 
 unique_sports = sorted(df["Sport"].unique())
 
-app = Dash()
+app = Dash(__name__, external_stylesheets=[dbc.themes.LUMEN])
+
 
 app.layout = html.Div([
-    html.Label("Choose Category:"),
-    dcc.Dropdown(
-        id="category-dropdown",
-        options=[
-            {"label": "Australia", "value": "Australia"},
-            {"label": "Sports", "value": "Sports"}
-        ],
-        placeholder="Select a category"
-    ),
+    html.H1("Welcome to Team Raygun's Dashboard!"),
     html.Br(),
+    html.Div(
+        [
+            html.Div(
+                [
+                    html.H2("Filter"),
+                    html.Br(),
+                    html.Label("Category:"),
+                    dcc.Dropdown(
+                        id="category-dropdown",
+                        placeholder="Select a category",
+                        options=[
+                            {"label": "Australia", "value": "Australia"},
+                            {"label": "Sports", "value": "Sports"}
+                        ], className="custom-dropdown-field"
+                    ),
+                    html.Br(),
 
-    html.Label("Choose Feature:"),
-    dcc.Dropdown(
-        id="feature-dropdown",
-        placeholder="Select a feature"
-    ),
-    html.Br(),
+                    html.Label("Feature:"),
+                    dcc.Dropdown(
+                        id="feature-dropdown",
+                        placeholder="Select a feature",
+                        className="custom-dropdown-field"
+                    ),
+                ], className="col-2 mt-4"),
 
-    dcc.Graph(id="output-graph")
-])
+            html.Div(
+                [
+                    dcc.Graph(id="output-graph")
+                ], className="col-10")
+
+        ], className="row")
+
+], className="custom-page")
+
 
 @app.callback(
     Output("feature-dropdown", "options"),
@@ -60,6 +78,7 @@ def update_graph(selected_category, selected_feature):
         return create_sport_chart(selected_feature)
     else:
         return px.bar(title="Select a Category and Feature")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
