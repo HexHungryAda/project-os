@@ -1,6 +1,5 @@
 from dash import Dash, html, dcc, Output, Input
 import pandas as pd
-import plotly.express as px
 from figures import create_australia_chart, create_sport_chart
 
 
@@ -18,14 +17,16 @@ app.layout = html.Div([
             {"label": "Australia", "value": "Australia"},
             {"label": "Sports", "value": "Sports"}
         ],
-        placeholder="Select a category"
+        placeholder="Select a category",
+        value="Australia" # default 
     ),
     html.Br(),
 
     html.Label("Choose Feature:"),
     dcc.Dropdown(
         id="feature-dropdown",
-        placeholder="Select a feature"
+        placeholder="Select a feature",
+        value="Medal Count"
     ),
     html.Br(),
 
@@ -59,8 +60,7 @@ def update_graph(selected_category, selected_feature):
     elif selected_category == "Sports" and selected_feature:
         return create_sport_chart(selected_feature)
     else:
-        return px.bar(title="Select a Category and Feature") # should have a default instead. actually what does this do?
-    # above line is only reason why need to import px.
+        pass # added default selection instead, add error here instead.
 
 if __name__ == "__main__":
-    # app.run(debug=True, port=8047)
+    app.run(debug=True, port=8047)
