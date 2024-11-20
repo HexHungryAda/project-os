@@ -63,4 +63,4 @@ def update_graph(selected_category, selected_feature):
         raise Exception("Error: Empty figure selection.") # doesn't quit the app or really display. maybe log it?
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8047) # maybe can try except here to get it to show?
+    app.run(debug=True) # maybe can try except here to get it to show?
