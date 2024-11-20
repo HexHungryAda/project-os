@@ -1,6 +1,6 @@
 from dash import Dash, html, dcc, Output, Input
 import pandas as pd
-import plotly_express as px
+import plotly.express as px
 from figures import create_australia_chart, create_sport_chart
 
 
@@ -59,7 +59,8 @@ def update_graph(selected_category, selected_feature):
     elif selected_category == "Sports" and selected_feature:
         return create_sport_chart(selected_feature)
     else:
-        return px.bar(title="Select a Category and Feature")
+        return px.bar(title="Select a Category and Feature") # should have a default instead. actually what does this do?
+    # above line is only reason why need to import px.
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # app.run(debug=True, port=8047)
