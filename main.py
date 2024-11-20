@@ -60,7 +60,7 @@ def update_graph(selected_category, selected_feature):
     elif selected_category == "Sports" and selected_feature:
         return create_sport_chart(selected_feature)
     else:
-        pass # added default selection instead, add error here instead.
+        raise Exception("Error: Empty figure selection.") # doesn't quit the app or really display. maybe log it?
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8047)
+    app.run(debug=True, port=8047) # maybe can try except here to get it to show?
