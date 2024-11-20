@@ -1,8 +1,15 @@
 import pandas as pd
 import plotly.express as px
+import hashlib as hl
 
 
 df = pd.read_csv("Data/athlete_events.csv")
+
+anonymous_name = df["Name"].apply(lambda x: hl.sha256(x.encode()).hexdigest())
+df.insert(1, "Anonymous Name", anonymous_name)
+df = df.drop("Name", axis=1)
+df = df.rename(columns={"Anonymous Name": "Name"})
+
 aus_df = df[df["NOC"] == "AUS"]
 medal_counts_by_sport = df.groupby(["Sport", "NOC", "Medal"]).size().reset_index(name="Count")
 
