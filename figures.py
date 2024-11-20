@@ -2,7 +2,6 @@ import pandas as pd
 import plotly.express as px
 import hashlib as hl
 
-
 df = pd.read_csv("Data/athlete_events.csv")
 
 anonymous_name = df["Name"].apply(lambda x: hl.sha256(x.encode()).hexdigest())
