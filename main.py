@@ -1,6 +1,5 @@
 from dash import Dash, html, dcc, Output, Input
 import pandas as pd
-import plotly_express as px
 from figures import create_australia_chart, create_sport_chart
 
 
@@ -18,14 +17,16 @@ app.layout = html.Div([
             {"label": "Australia", "value": "Australia"},
             {"label": "Sports", "value": "Sports"}
         ],
-        placeholder="Select a category"
+        placeholder="Select a category",
+        value="Australia" # default 
     ),
     html.Br(),
 
     html.Label("Choose Feature:"),
     dcc.Dropdown(
         id="feature-dropdown",
-        placeholder="Select a feature"
+        placeholder="Select a feature",
+        value="Medal Count"
     ),
     html.Br(),
 
@@ -59,7 +60,7 @@ def update_graph(selected_category, selected_feature):
     elif selected_category == "Sports" and selected_feature:
         return create_sport_chart(selected_feature)
     else:
-        return px.bar(title="Select a Category and Feature")
+        raise Exception("Error: Empty figure selection.") # doesn't quit the app or really display. maybe log it?
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True) # maybe can try except here to get it to show?
