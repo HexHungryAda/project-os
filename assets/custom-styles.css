@@ -17,5 +17,11 @@ h2 {
 }
 
 .plot-container {
-    height: 650px;
+    height: 450px;
+}
+
+@media only screen and (min-width: 1920px) {
+    .plot-container {
+        height: 650px;
+    }
 }
