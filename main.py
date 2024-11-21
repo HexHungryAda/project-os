@@ -13,41 +13,47 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.LUMEN])
 
 
 app.layout = html.Div([
-    html.H1("Welcome to Team Raygun's Dashboard!"),
-    html.Br(),
-    html.Div(
-        [
-            html.Div(
-                [
-                    html.H2("Filter"),
-                    html.Br(),
-                    html.Label("Category:"),
-                    dcc.Dropdown(
-                        id="category-dropdown",
-                        placeholder="Select a category",
-                        options=[
-                            {"label": "Australia", "value": "Australia"},
-                            {"label": "Sports", "value": "Sports"}
-                        ], className="custom-dropdown-field"
-                    ),
-                    html.Br(),
+    html.Div([
+        html.H1(
+            "Welcome to Team Raygun's Dashboard!", 
+                style={"fontSize": "34px"}
+        )
+    ], className="text-light p-5", style={"backgroundColor": "#214652"}
+    ),
+    html.Div([
+        html.Div([
+            html.H2("Filter", style={"fontSize": "28px"}),
+            html.Br(),
+            html.Label("Category:"),
+            dcc.Dropdown(
+                id="category-dropdown",
+                placeholder="Select a category",
+                options=[
+                    {"label": "Australia", "value": "Australia"},
+                    {"label": "Sports", "value": "Sports"}
+                ], style={"maxWidth": "200px"}),
 
-                    html.Label("Feature:"),
-                    dcc.Dropdown(
-                        id="feature-dropdown",
-                        placeholder="Select a feature",
-                        className="custom-dropdown-field"
-                    ),
-                ], className="col-2 mt-4"),
+            html.Br(),
+
+            html.Label("Feature:"),
+            dcc.Dropdown(
+                id="feature-dropdown",
+                placeholder="Select a feature",
+                style={"maxWidth": "200px"}
+            ),
+
+            html.Img(
+                src="assets/raygun.png", 
+                style={"width": "100%", "marginTop": "10px"}
+            )
+        ], style={"minHeight": "calc(100vh - 145px)"}, className="col-2 p-5 border border-bottom-0"),
 
             html.Div(
                 [
                     dcc.Graph(id="output-graph")
-                ], className="col-10")
-
-        ], className="row")
-
-], className="custom-page")
+                ], className="col-9 mt-3")
+    ], className="row")
+], style={"minWidth": "100%", "minHeight": "100vh", "overflow-x": "hidden"})
 
 
 @app.callback(
@@ -77,7 +83,7 @@ def update_graph(selected_category, selected_feature):
     elif selected_category == "Sports" and selected_feature:
         return create_sport_chart(selected_feature)
     else:
-        return px.bar(title="Select a Category")
+        return px.bar(title="Select a filter")
 
 
 if __name__ == "__main__":
