@@ -1,43 +1,73 @@
 from dash import Dash, html, dcc, Output, Input
 import pandas as pd
+import plotly_express as px
+import dash_bootstrap_components as dbc
 from figures import create_empty_figure, create_sports_figure, create_australia_chart
+
 
 df = pd.read_csv("Data/athlete_events.csv")
 
 unique_sports = sorted(df["Sport"].unique())
 
-app = Dash()
+app = Dash(__name__, external_stylesheets=[dbc.themes.LUMEN])
+
 
 app.layout = html.Div([
-    html.Label("Choose Category:"),
-    dcc.Dropdown(
-        id="category-dropdown",
-        options=[
-            {"label": "Australia", "value": "Australia"},
-            {"label": "Sports", "value": "Sports"}
-        ],
-        placeholder="Select a category",
-        value="Australia" # default 
-    ),
-    html.Br(),
+    html.Div([
+        html.H1(
+            "Welcome to Team Raygun's Dashboard!", 
+                style={"fontSize": "34px"}
+        )
+    ], className="text-light p-5", style={"backgroundColor": "#214652"}
 
-    html.Label("Choose Feature:"),
-    dcc.Dropdown(
-        id="feature-dropdown",
-        placeholder="Select a feature",
-        value="Medal Count"
     ),
-    html.Br(),
+    html.Div([
+        html.Div([
+            html.H2("Filter", style={"fontSize": "28px"}),
+            html.Br(),
+            html.Label("Category:"),
+            dcc.Dropdown(
+                id="category-dropdown",
+                placeholder="Select a category",
+                options=[
+                    {"label": "Australia", "value": "Australia"},
+                    {"label": "Sports", "value": "Sports"}
+                ],
+                value="Australia", # default
+                style={"maxWidth": "200px"}
+            ),
+            html.Br(),
 
-    html.Label("Choose Subfeature:"),
-    dcc.Dropdown(
-        id="subfeature-dropdown",
-        placeholder="Select a feature",
-    ),
-    html.Br(),
+            html.Label("Feature:"),
+            dcc.Dropdown(
+                id="feature-dropdown",
+                placeholder="Select a feature",
+                value="Medal Count",
+                style={"maxWidth": "200px"}
+            ),
+            html.Br(),
 
-    dcc.Graph(id="output-graph")
-])
+            html.Label("Choose Subfeature:"),
+            dcc.Dropdown(
+                id="subfeature-dropdown",
+                placeholder="Select a feature",
+                style={"maxWidth": "200px"}
+            ),
+
+            html.Img(
+                src="assets/raygun.png", 
+                style={"width": "100%", "marginTop": "10px"}
+            )
+        ], style={"minHeight": "calc(100vh - 145px)"}, className="col-2 p-5 border border-bottom-0"),
+
+            html.Div(
+                [
+                    dcc.Graph(id="output-graph")
+                ], className="col-9 mt-3")
+    ], className="row")
+], style={"minWidth": "100%", "minHeight": "100vh", "overflow-x": "hidden"})
+
+
 
 @app.callback(
     [Output("feature-dropdown", "options"),
@@ -80,8 +110,9 @@ def update_graph(selected_category, selected_feature, selected_subfeature):
     elif selected_category == "Sports" and selected_feature:
         return create_sports_figure(selected_feature, selected_subfeature)
     else:
+
         return create_empty_figure("Empty")
-        
+
 if __name__ == "__main__":
     app.run(debug=True)
 
