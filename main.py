@@ -83,7 +83,7 @@ def update_graph(selected_category, selected_feature, selected_subfeature):
         return create_empty_figure("Empty")
         
 if __name__ == "__main__":
-    app.run(debug=True, port=8047)
+    app.run(debug=True)
 
 # there is error when pick sports vs first and then pick australia again. or did I accidentally fix it, can't recreate???
 # maybe (speculation) something about not clearing the figures after switch back australia?
