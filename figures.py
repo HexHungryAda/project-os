@@ -64,3 +64,15 @@ def create_sport_chart(sport):
         color_discrete_map={"Gold": "gold", "Silver": "silver", "Bronze": "#8c7853"}
     )
     return fig
+
+def create_athlete_medal_scatter(sport, compare_to):
+    df_sport = df[(df['Sport'] == sport)]
+    medals_per_athlete = df_sport.groupby('ID')['Medal'].count()
+    df_sport = df_sport.merge(medals_per_athlete.rename('Medal_Count'), on='ID')
+
+    fig = px.scatter(
+        df_sport, x=compare_to, y="Medal_Count", 
+        title=f"{compare_to} vs Medals for each athlete in {sport}", labels={'Medal_Count': 'Medals'},
+        trendline="ols", template='plotly', trendline_color_override='green', color_discrete_sequence=['purple']
+        )
+    return fig
