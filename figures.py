@@ -12,7 +12,12 @@ df = df.rename(columns={"Anonymous Name": "Name"})
 aus_df = df[df["NOC"] == "AUS"]
 medal_counts_by_sport = df.groupby(["Sport", "NOC", "Medal"]).size().reset_index(name="Count")
 
+def create_empty_figure(msg):
+    return px.bar(title=msg)
+
 def create_australia_chart(selected_feature):
+    aus_df = df[df["NOC"] == "AUS"]
+
     if selected_feature == "Medal Count":
         medals_per_os = aus_df.groupby(["Games", "Medal"]).size().unstack(level=1, fill_value=0).reset_index()
         medals_per_os['Year'] = medals_per_os['Games'].str.extract(r'(\d{4})').astype(int)
@@ -43,36 +48,47 @@ def create_australia_chart(selected_feature):
         )
         fig.update_layout(bargap=0.1)
     else:
-        fig = px.bar(title="No Data Available")
+        #fig = px.bar(title="No Data Available")
+        create_empty_figure("Empty") 
 
     return fig
 
+def create_sports_figure(sport, subfeature):
+    sport_df = df[df['Sport'] == sport]
 
-def create_sport_chart(sport):
-    sport_medals = medal_counts_by_sport[medal_counts_by_sport["Sport"] == sport]
-    medal_count = sport_medals.pivot(index="NOC", columns="Medal", values="Count").fillna(0)
-    medal_count["Total"] = medal_count.sum(axis=1)
-    top_10_medals = medal_count.nlargest(10, "Total").reset_index()
+    if subfeature == "Top10 Medals":
+        sport_medals = medal_counts_by_sport[medal_counts_by_sport["Sport"] == sport]
+        medal_count = sport_medals.pivot(index="NOC", columns="Medal", values="Count").fillna(0)
+        medal_count["Total"] = medal_count.sum(axis=1)
+        top_10_medals = medal_count.nlargest(10, "Total").reset_index()
 
-    fig = px.bar(
-        top_10_medals,
-        x="NOC",
-        y=["Gold", "Silver", "Bronze"],
-        title=f"Top 10 Medal-Winning Countries in {sport}",
-        labels={"value": "Number of Medals", "variable": "Medal Type"},
-        barmode="stack",
-        color_discrete_map={"Gold": "gold", "Silver": "silver", "Bronze": "#8c7853"}
-    )
-    return fig
-
-def create_athlete_medal_scatter(sport, compare_to):
-    df_sport = df[(df['Sport'] == sport)]
-    medals_per_athlete = df_sport.groupby('ID')['Medal'].count()
-    df_sport = df_sport.merge(medals_per_athlete.rename('Medal_Count'), on='ID')
-
-    fig = px.scatter(
-        df_sport, x=compare_to, y="Medal_Count", 
-        title=f"{compare_to} vs Medals for each athlete in {sport}", labels={'Medal_Count': 'Medals'},
-        trendline="ols", template='plotly', trendline_color_override='green', color_discrete_sequence=['purple']
+        fig = px.bar(
+            top_10_medals,
+            x="NOC",
+            y=["Gold", "Silver", "Bronze"],
+            title=f"Top 10 Medal-Winning Countries in {sport}",
+            labels={"value": "Number of Medals", "variable": "Medal Type"},
+            barmode="stack",
+            color_discrete_map={"Gold": "gold", "Silver": "silver", "Bronze": "#8c7853"}
         )
-    return fig
+        return fig
+
+    elif subfeature in ["Medals vs Weight", "Medals vs Height", "Medals vs Age"]:
+        medals_per_athlete = sport_df.groupby('ID')['Medal'].count()
+        athlete_medals_df = sport_df.merge(medals_per_athlete.rename('Medal_Count'), on='ID')
+
+        sliced_feature = subfeature[10:]
+
+        fig = px.scatter(
+            athlete_medals_df, x=sliced_feature, y="Medal_Count", 
+            title=f"{subfeature} for each athlete in {sport}", labels={'Medal_Count': 'Medals'},
+            trendline="ols", template='plotly', trendline_color_override='green', color_discrete_sequence=['purple']
+            )
+        return fig
+
+    # elif subfeature == average age?
+
+    else:
+        fig = create_empty_figure("Empty")
+
+    return fig 
