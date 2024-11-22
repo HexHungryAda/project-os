@@ -47,6 +47,14 @@ def create_australia_chart(selected_feature):
             color_discrete_sequence=["#1f77b4"]
         )
         fig.update_layout(bargap=0.1)
+
+    elif selected_feature == "Season":
+        fig = px.histogram(
+            aus_df, x="Season", nbins=20,
+            title="Seasons Played",
+            labels={"Season": "Season", "count": "Number of Seasons Played"}
+        )
+        fig.update_layout(bargap=0.1)
     else:
         #fig = px.bar(title="No Data Available")
         create_empty_figure("Empty") 
