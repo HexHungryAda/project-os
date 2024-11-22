@@ -93,7 +93,8 @@ def update_feature_dropdown(selected_category):
     if selected_category == "Australia":
         feature_options = [
             {"label": "Medal Count", "value": "Medal Count"},
-            {"label": "Average Age in Olympics", "value": "Average Age"}
+            {"label": "Average Age in Olympics", "value": "Average Age"},
+            {"label": "Season", "value": "Season"}
         ]
     elif selected_category == "Sports":
         feature_options = [
