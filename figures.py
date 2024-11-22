@@ -9,7 +9,6 @@ df.insert(1, "Anonymous Name", anonymous_name)
 df = df.drop("Name", axis=1)
 df = df.rename(columns={"Anonymous Name": "Name"})
 
-aus_df = df[df["NOC"] == "AUS"]
 medal_counts_by_sport = df.groupby(["Sport", "NOC", "Medal"]).size().reset_index(name="Count")
 
 def create_empty_figure(msg):
@@ -56,7 +55,6 @@ def create_australia_chart(selected_feature):
         )
         fig.update_layout(bargap=0.1)
     else:
-        #fig = px.bar(title="No Data Available")
         create_empty_figure("Empty") 
 
     return fig
@@ -93,9 +91,6 @@ def create_sports_figure(sport, subfeature):
             trendline="ols", template='plotly', trendline_color_override='green', color_discrete_sequence=['purple']
             )
         return fig
-
-    # elif subfeature == average age?
-
     else:
         fig = create_empty_figure("Empty")
 

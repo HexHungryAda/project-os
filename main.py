@@ -1,6 +1,5 @@
 from dash import Dash, html, dcc, Output, Input
 import pandas as pd
-import plotly_express as px
 import dash_bootstrap_components as dbc
 from figures import create_empty_figure, create_sports_figure, create_australia_chart
 
