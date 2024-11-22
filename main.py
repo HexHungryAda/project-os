@@ -32,9 +32,7 @@ app.layout = html.Div([
                 options=[
                     {"label": "Australia", "value": "Australia"},
                     {"label": "Sports", "value": "Sports"}
-                ],
-                value="Australia", # default
-                style={"maxWidth": "200px"}
+                ], style={"maxWidth": "200px"}
             ),
             html.Br(),
 
@@ -42,16 +40,17 @@ app.layout = html.Div([
             dcc.Dropdown(
                 id="feature-dropdown",
                 placeholder="Select a feature",
-                value="Medal Count",
-                style={"maxWidth": "200px"}
+                style={"maxWidth": "200px"},
+                disabled=True
             ),
             html.Br(),
 
-            html.Label("Choose Subfeature:"),
+            html.Label("Subfeature:"),
             dcc.Dropdown(
                 id="subfeature-dropdown",
-                placeholder="Select a feature",
-                style={"maxWidth": "200px"}
+                placeholder="Select a sub-feature",
+                style={"maxWidth": "200px"},
+                disabled=True
             ),
 
             html.Img(
@@ -67,7 +66,20 @@ app.layout = html.Div([
     ], className="row")
 ], style={"minWidth": "100%", "minHeight": "100vh", "overflow-x": "hidden"})
 
+@app.callback(
+    Output("feature-dropdown", "disabled"),
+    Input("category-dropdown", "value"),
+)
+def toggle_feature_dropdown(selected_category):
+    return selected_category is None 
 
+@app.callback(
+    Output("subfeature-dropdown", "disabled"),
+    Input("category-dropdown", "value"),
+    Input("feature-dropdown", "value"),
+)
+def toggle_subfeature_dropdown(selected_category, selected_feature):
+    return not (selected_category == "Sports" and selected_feature)
 
 @app.callback(
     [Output("feature-dropdown", "options"),
@@ -106,15 +118,19 @@ def update_feature_dropdown(selected_category):
 )
 def update_graph(selected_category, selected_feature, selected_subfeature):
     if selected_category == "Australia":
+        if not selected_feature:
+            return create_empty_figure("Please select a feature for Australia.")
         return create_australia_chart(selected_feature)
-    elif selected_category == "Sports" and selected_feature:
+    
+    elif selected_category == "Sports":
+        if not selected_feature:
+            return create_empty_figure("Please select a feature for Sport.")
+        if selected_feature and not selected_subfeature:
+            return create_empty_figure(f"Please select a sub-feature for {selected_feature}.")
         return create_sports_figure(selected_feature, selected_subfeature)
+    
     else:
-
-        return create_empty_figure("Empty")
+        return create_empty_figure("Please select a category.")
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-# there is error when pick sports vs first and then pick australia again. or did I accidentally fix it, can't recreate???
-# maybe (speculation) something about not clearing the figures after switch back australia?
