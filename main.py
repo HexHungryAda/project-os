@@ -8,6 +8,8 @@ df = pd.read_csv("Data/athlete_events.csv")
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.LUMEN])
 
+server = app.server
+
 app.layout = html.Div([
     html.Div([
         html.H1(
