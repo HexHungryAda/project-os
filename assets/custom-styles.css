@@ -1,9 +1,19 @@
-.plot-container {
-    height: 450px;
+.custom-filter {
+    width: 20%;
 }
 
-@media only screen and (min-width: 1920px) {
+.plot-container {
+    height: calc(100vh - 20px);
+}
+
+@media only screen and (min-width: 1400px) {
     .plot-container {
-        height: 650px;
+        height: calc(100vh - 200px);
+    }
+}
+
+@media only screen and (min-width: 1800px) {
+    .custom-filter {
+        width: 15%;
     }
 }
