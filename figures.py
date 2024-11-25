@@ -26,7 +26,7 @@ def create_australia_chart(selected_feature):
         # Reg-ex: match a sequence of four digits in a string.
         medals_per_os["Year"] = medals_per_os["Games"].str.extract(r"(\d{4})").astype(int)
         medals_per_os = medals_per_os.sort_values("Year")
-        melted_medals = medals_per_os.melt(id_vars=["Games", "Year"], value_vars=["Bronze", "Gold", "Silver"],
+        melted_medals = medals_per_os.melt(id_vars=["Games", "Year"], value_vars=["Gold", "Silver", "Bronze"],
                                            var_name="Medal", value_name="Count")
 
         fig = px.bar(
@@ -49,20 +49,20 @@ def create_australia_chart(selected_feature):
         fig = px.histogram(
             aus_df, x="Age", nbins=50,
             title="Age Distribution of Australian Athletes",
-            labels={"Age": "Age", "count": "Number of Athletes"},
+            labels={"Age": "Age"},
             color_discrete_sequence=[ray_green]
         )
-        fig.update_layout(bargap=0.1)
+        fig.update_layout(bargap=0.1, yaxis_title="Number of Athletes")
         return fig
 
     elif selected_feature == "Season":
         fig = px.histogram(
             aus_df, x="Season",
             title="Seasons Played",
-            labels={"Season": "Season", "count": "Number of Seasons Played"},
+            labels={"Season": "Season"},
             color_discrete_sequence=[ray_green]
         )
-        fig.update_layout(bargap=0.1)
+        fig.update_layout(bargap=0.1, yaxis_title="Athlete-Events")
         return fig
     else:
         return create_empty_figure("Empty")
