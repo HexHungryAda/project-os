@@ -52,16 +52,16 @@ app.layout = html.Div([
 
             html.Img(
                 src="assets/raygun.png",
-                style={"width": "100%", "marginTop": "10px"}
+                style={"width": "100%", "max-width": "180px", "marginTop": "10px"}
             )
-        ], style={"minHeight": "calc(100vh - 145px)", "width": "20%"}, className="col-2 p-5 border border-2 border-end"),
+        ], style={"minHeight": "calc(100vh - 145px)"}, className="col-2 p-5 border border-2 border-end custom-filter"),
 
         html.Div(
             [
                 dcc.Graph(id="output-graph")
             ], className="col-9 mt-3")
     ], className="row")
-], style={"minWidth": "100%", "minHeight": "100vh", "overflow-x": "hidden"})
+], style={"minWidth": "100%", "maxHeight": "100vh", "overflow-x": "hidden"})
 
 
 @app.callback(
