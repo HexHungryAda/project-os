@@ -49,20 +49,20 @@ def create_australia_chart(selected_feature):
         fig = px.histogram(
             aus_df, x="Age", nbins=50,
             title="Age Distribution of Australian Athletes",
-            labels={"Age": "Age", "count": "Number of Athletes"},
+            labels={"Age": "Age"},
             color_discrete_sequence=[ray_green]
         )
-        fig.update_layout(bargap=0.1)
+        fig.update_layout(bargap=0.1, yaxis_title="Number of Athletes")
         return fig
 
     elif selected_feature == "Season":
         fig = px.histogram(
             aus_df, x="Season",
             title="Seasons Played",
-            labels={"Season": "Season", "count": "Number of Seasons Played"},
+            labels={"Season": "Season"},
             color_discrete_sequence=[ray_green]
         )
-        fig.update_layout(bargap=0.1)
+        fig.update_layout(bargap=0.1, yaxis_title="Athlete-Events")
         return fig
     else:
         return create_empty_figure("Empty")
