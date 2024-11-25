@@ -26,7 +26,7 @@ def create_australia_chart(selected_feature):
         # Reg-ex: match a sequence of four digits in a string.
         medals_per_os["Year"] = medals_per_os["Games"].str.extract(r"(\d{4})").astype(int)
         medals_per_os = medals_per_os.sort_values("Year")
-        melted_medals = medals_per_os.melt(id_vars=["Games", "Year"], value_vars=["Bronze", "Gold", "Silver"],
+        melted_medals = medals_per_os.melt(id_vars=["Games", "Year"], value_vars=["Gold", "Silver", "Bronze"],
                                            var_name="Medal", value_name="Count")
 
         fig = px.bar(
