@@ -4,8 +4,6 @@ import dash_bootstrap_components as dbc
 from figures import create_empty_figure, create_sports_figure, create_australia_chart
 
 
-df = pd.read_csv("Data/athlete_events.csv")
-
 app = Dash(__name__, external_stylesheets=[dbc.themes.LUMEN])
 
 server = app.server
