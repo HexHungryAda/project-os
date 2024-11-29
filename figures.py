@@ -64,6 +64,7 @@ def create_australia_chart(selected_feature):
         )
         fig.update_layout(bargap=0.1, yaxis_title="Athlete-Events")
         return fig
+
     else:
         return create_empty_figure("Empty")
 
@@ -90,8 +91,17 @@ def create_sports_figure(sport, subfeature):
         return fig
 
     elif subfeature in ["Medals vs Weight", "Medals vs Height", "Medals vs Age"]:
-        medals_per_athlete = sport_df.groupby("ID")["Medal"].count()
-        athlete_medals_df = sport_df.merge(medals_per_athlete.rename("Medal_Count"), on="ID")
+        athlete_medals_df = (
+            sport_df.groupby("ID")
+            .agg({
+                'Medal': 'count',
+                'Height': 'mean',
+                'Weight': 'mean',
+                'Age': 'mean'
+            })
+            .rename(columns={'Medal': 'Medal_Count'})
+            .reset_index()
+        )
 
         sliced_feature = subfeature[10:]
 
